@@ -16,4 +16,12 @@ public class Student {
     public Integer getStudentId() {
         return studentId;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", studentName='" + studentName + '\'' +
+                '}';
+    }
 }
