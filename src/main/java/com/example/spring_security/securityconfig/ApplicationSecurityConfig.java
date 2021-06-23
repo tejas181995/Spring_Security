@@ -56,8 +56,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                 .key("somethingverysecured")
-                .rememberMeParameter("remember-me");
-
+                .rememberMeParameter("remember-me")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
 
     }
 
@@ -67,21 +74,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails atharvaUser = User.builder()
                 .username("atharva")
                 .password(passwordEncoder.encode("password"))
-//                .roles(STUDENT.name()) //role student
                 .authorities(STUDENT.getGrantedAuthorities())
                 .build();
 
         UserDetails tejasUser = User.builder()
                 .username("tejas")
                 .password(passwordEncoder.encode("password123"))
-//                .roles(ADMIN.name()) // role admin
                 .authorities(ADMIN.getGrantedAuthorities())
                 .build();
 
         UserDetails niksUser = User.builder()
                 .username("niks")
                 .password(passwordEncoder.encode("pass1234"))
-               // .roles(ADMINTRAINEE.name())
                 .authorities(ADMINTRAINEE.getGrantedAuthorities())
                 .build();
 
